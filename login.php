@@ -1,37 +1,46 @@
+<h1>login form</h1>
+<form action="login.php"method="POST">
+    <label>username</label><br>
+    <input type="text" name="username" placeholder="ex.Farel" required/>
+    <br>
+    <label>password</label><br>
+    <input type="password" name="password" placeholder="ex.---" required/>
+    <br>
+    <input type="submit" name="login" value="masuk"/>
+</form>
+
 <?php
-    session_start();
-    include "koneksi.php";
-?>
+    include('./input-config.php');
+    
+    if(isset($_POST["login"])){
+        $username=$_POST["username"];
+        $password=$_POST["password"];
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Halaman Login</title>
-</head>
-<body>
-    <form method="post">
-        <label>Username :</label>
-        <input type="text" name="fusername"><br>
-        <label>Password :</label>
-        <input type="password" name="fpassword"><br>
-        <button type="submit" name="fmasuk">Login</button>
-    </form>
-
-    <?php
-        if (isset($_POST['fmasuk'])) {
-            $username = $_POST['fusername'];
-            $password = $_POST['fpassword'];
-            $qry = mysqli_query($koneksi, "SELECT * FROM tab_login WHERE username = '$username' AND password = md5('$password')");
-            $cek = mysqli_num_rows($qry);
-            if($cek==1){
-                $_SESSION['userweb']=$username;
-                header ("location:admin.php");
-                exit;
-            }
-            else{
-                echo "Maaf username dan password anda salah";
-            }
+        $query="SELECT * FROM akun
+        WHERE username = '$username' AND password = MD5('$password');";
+        $data = mysqli_query($mysqli,$query);
+        if(mysqli_num_rows($data)>0){
+            $row =mysqli_fetch_array($data);
+            
+            $_SESSION["login"]=TRUE;
+            $_SESSION["akun_id"]= $row["akun_id"];
+            $_SESSION["username"]= $row["username"];
+            $_SESSION["nama_akun"]= $row["nama_akun"];
+            $_SESSION["role"]= $row["role"];
+             
+            echo "
+            <script>
+            alert('login berhasil');
+            window.location='input-datadiri.php';
+            </script>
+            ";
+    }else{
+        echo "
+            <script>
+            alert('akun tidak ditemukan,coba lagi ');
+            window.location='login.php';
+            </script>
+            ";
         }
-    ?>
-</body>
-</html>
+    }
+?>

@@ -1,5 +1,14 @@
 <?php 
       include('./input-config.php');
+      if($_SESSION["login"] != TRUE){
+            header('location:login.php');
+      }
+
+      echo"selamat datang,".$_SESSION ["username"]."<br>";
+      echo"anda sebagai : " .$_SESSION["role"];
+      echo"-";
+      echo"<a href='logout.php'>Logout</a>";
+      echo"<hr>"; 
       echo "<a href='input-datadiri-tambah.php'>Tambah Data</a>";
       echo "<hr>";
       // READ - Menampilkan data dari database

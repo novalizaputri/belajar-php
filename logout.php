@@ -1,6 +1,12 @@
 <?php
-    session_start();
-    $_SESSION['userweb']="";
-    header ("location:login.php");
-    exit;
+    include('./input-config.php');
+
+    session_destroy();
+
+    echo "
+    <script>
+        alert('logout berhasil');
+        window.location='login.php';
+    </script>
+    ";
 ?>
